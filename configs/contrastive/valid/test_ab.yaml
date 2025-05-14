@@ -1,0 +1,22 @@
+dataset:
+  train:
+    class: AntibodyDataset
+    mmap_dir: ./datasets/antibody/SAbDab/processed
+    specify_index: ./datasets/antibody/SAbDab/processed/train_index.txt
+    test_mode: true
+    # cdr_type:
+    #   - HCDR3
+  test:
+    class: AntibodyDataset
+    mmap_dir: ./datasets/antibody/SAbDab/processed
+    specify_index: ./datasets/antibody/SAbDab/processed/test_index.txt
+    test_mode: true
+    cdr_type:
+      - HCDR3
+
+dataloader:
+  num_workers: 0
+  batch_size: 2
+
+
+

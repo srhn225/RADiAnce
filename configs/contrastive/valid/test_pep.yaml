@@ -1,0 +1,23 @@
+dataset:
+  train:
+    class: ConcatDatasetWrapper
+    datasets:
+      - class: PeptideDatasetPrompt
+        mmap_dir: ./datasets/peptide/pepbench/processed
+        specify_index: ./datasets/peptide/pepbench/processed/train_index.txt
+        cluster: ./datasets/peptide/pepbench/train.cluster
+      - class: PeptideDatasetPrompt
+        mmap_dir: ./datasets/peptide/pepbench/processed
+        specify_index: ./datasets/peptide/pepbench/processed/non_standard_index.txt
+      - class: PeptideDatasetPrompt
+        mmap_dir: ./datasets/peptide/ProtFrag/processed
+
+  test:
+    class: PeptideDataset
+    mmap_dir: ./datasets/peptide/LNR/processed
+
+dataloader:
+  num_workers: 4
+  batch_size: 2
+
+

@@ -1,0 +1,37 @@
+name: RADiAnce
+channels:
+  - pytorch
+  - nvidia
+  - bioconda
+  - conda-forge
+  - pyg
+  - defaults
+dependencies:
+  - python=3.9
+  - pytorch::pytorch=1.13.1
+  - pytorch::pytorch-cuda=11.7
+  - nvidia::cudatoolkit=11.7.0
+  - mkl=2024.0.0
+  - pyg::pytorch-scatter
+  - biopython=1.80
+  - scikit-learn
+  - scipy
+  - pandas
+  - tensorboard
+  - mmseqs2
+  - openmm
+  - openbabel
+  - pdbfixer
+  - pip
+  - pip:
+    - DockQ==2.1.3
+    - rdkit-pypi==2022.3.5
+    - biotite==0.40.0
+    - tqdm
+    - easydict
+    - wandb
+    - sympy
+    - prolif
+    - packaging # for torch.utils.tensorboard
+    - networkx
+    - ray

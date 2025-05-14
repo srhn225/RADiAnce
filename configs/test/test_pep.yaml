@@ -1,0 +1,12 @@
+dataset:
+  test:
+    class: PeptideDatasetRAG
+    mmap_dir: ./datasets/peptide/LNR/processed
+    feature_path: ./features/protein/match_cache_protein/ligand_mmap
+    topn_index_path: ./features/protein/match_cache_protein/top50_matches.json
+dataloader:
+  num_workers: 4
+  batch_size: 8
+
+n_samples: 1
+n_cycles: 0

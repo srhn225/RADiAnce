@@ -1,0 +1,127 @@
+dataset:
+  train:
+    # Peptides
+    - class: DynamicBatchWrapper
+      dataset:
+        class: MixDatasetWrapper
+        datasets:
+          # pepbench
+          - class: PeptideDatasetRAGfull
+            mmap_dir: ./datasets/peptide/pepbench/processed
+            specify_index: ./datasets/peptide/pepbench/processed/train_index.txt
+            cluster: ./datasets/peptide/pepbench/train.cluster
+            length_type: block
+            feature_path: ./featuresfull/protein/ligand_mmap
+            topn_index_path: ./featuresfull/protein/top50_matches.json
+          # protein-peptide complex with non standard amino acids
+          - class: PeptideDatasetRAGfull
+            mmap_dir: ./datasets/peptide/pepbench/processed
+            specify_index: ./datasets/peptide/pepbench/processed/non_standard_index.txt
+            length_type: block
+            feature_path: ./featuresfull/protein/ligand_mmap
+            topn_index_path: ./featuresfull/protein/top50_matches.json
+          # protein-fragments
+          - class: PeptideDatasetRAGfull
+            mmap_dir: ./datasets/peptide/ProtFrag/processed
+            length_type: block
+            feature_path: ./featuresfull/protein/ligand_mmap
+            topn_index_path: ./featuresfull/protein/top50_matches.json            
+        # weights: [1.0, 1.0, 1.0]
+      complexity: n*n
+      ubound_per_batch: 1800000
+      n_use_max_in_batch: true
+
+    # Antibody
+    - class: DynamicBatchWrapper
+      dataset:
+        class: AntibodyDatasetRAGfull
+        mmap_dir: ./datasets/antibody/SAbDab/processed
+        specify_index: ./datasets/antibody/SAbDab/processed/train_index.txt
+        length_type: block
+        feature_path: ./featuresfull/protein/ligand_mmap
+        topn_index_path: ./featuresfull/protein/top50_matches.json
+      complexity: n*n
+      ubound_per_batch: 900000
+      n_use_max_in_batch: true
+  valid:
+    - class: DynamicBatchWrapper
+      dataset: 
+        class: PeptideDatasetRAGfull
+        mmap_dir: ./datasets/peptide/pepbench/processed
+        specify_index: ./datasets/peptide/pepbench/processed/valid_index.txt
+        length_type: block
+        feature_path: ./featuresfull/protein/ligand_mmap
+        topn_index_path: ./featuresfull/protein/top50_matches.json
+      complexity: n*n
+      ubound_per_batch: 1800000
+      n_use_max_in_batch: true
+
+    - class: DynamicBatchWrapper
+      dataset: 
+        class: AntibodyDatasetRAGfull
+        mmap_dir: ./datasets/antibody/SAbDab/processed
+        specify_index: ./datasets/antibody/SAbDab/processed/valid_index.txt
+        length_type: block
+        feature_path: ./featuresfull/protein/ligand_mmap
+        topn_index_path: ./featuresfull/protein/top50_matches.json
+      complexity: n*n
+      ubound_per_batch: 900000
+      n_use_max_in_batch: true
+
+dataloader:
+  train:
+    shuffle: true
+    num_workers: 16
+  valid:
+    num_workers: 8
+
+trainer:
+  class: LDMTrainer
+  criterion: loss
+  config:
+    max_epoch: 2500
+    save_topk: 10
+    val_freq: 1
+    save_dir: ./ckpts/ldmproteinfull
+    patience: 10
+    metric_min_better: true
+    proj_name: RADiAnce # for wandb
+    logger: tensorboard # if you want to use wandb, please comment this line 
+
+    optimizer:
+      class: AdamW
+      lr: 1.0e-4
+
+    scheduler:
+      class: ReduceLROnPlateau
+      factor: 0.8
+      patience: 5
+      mode: min
+      frequency: val_epoch
+      min_lr: 5.0e-6
+
+model:
+  class: LDMMolDesignRAGfull
+  autoencoder_ckpt: './ckpts/combined/AE_combined/version_0/checkpoint/epoch249_step238500.ckpt' #load by yourself 
+  latent_deterministic: true  # without resample in training
+  hidden_size: 512
+  num_steps: 100
+  h_loss_weight: 1.0
+  std: 10.0
+  diffusion_opt:
+    trans_seq_type: Diffusion
+    trans_pos_type: Diffusion
+    encoder_type: EPTragfull
+    encoder_opt:
+      n_layers: 6
+      n_rbf: 64
+      cutoff: 3.0  # already normalized
+      n_head: 8
+      use_edge_feat: true
+      pre_norm: true
+      efficient: false
+      vector_act: layernorm
+  max_unmask_ratio: 0.0
+  is_aa_corrupt_ratio: 0.1
+
+load_ckpt: ''

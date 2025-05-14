@@ -1,0 +1,17 @@
+dataset:
+  test:
+    class: AntibodyDatasetRAG
+    mmap_dir: ./datasets/antibody/SAbDab/processed
+    specify_index: ./datasets/antibody/SAbDab/processed/test_index.txt
+    feature_path: ./features/protein/match_cache_protein/ligand_mmap
+    topn_index_path: ./features/protein/match_cache_protein/top50_matches.json
+    test_mode: true
+    cdr_type:
+      - LCDR3
+
+dataloader:
+  num_workers: 4
+  batch_size: 2
+n_samples: 100
+n_cycles: 0
+# CUDA_VISIBLE_DEVICES=4 python generate.py --config configs/test_rag_all/test_abl3.yaml --ckpt ckpts/all/alldata_fin.ckpt --gpu 0 --save_dir ./resultsallcdr/L3
