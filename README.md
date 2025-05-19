@@ -66,7 +66,7 @@ Important: You need to change the rag database path in the train configs(e.g.`./
 
 ## Training
 
-Training of the full RADiAnce requires 8 A800 GPUs with 80G memmory each.
+Training of the full RADiAnce requires 8 GPUs with 80G memmory each.
 
 ```bash
 GPU=0,1,2,3,4,5,6,7 bash ./scripts/train.sh ./configs/contrastive/train_pt.yaml # train contrastive autoencoder
