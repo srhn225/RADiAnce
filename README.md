@@ -1,9 +1,9 @@
-# RADiAnce:Retrieval-Augmented Diffusion for Aligned interface 
+# RADiAnce: Retrieval-Augmented Diffusion for Aligned interface 
 ![model](./assets/model1.svg)
 
 
 ## Introduction
-This repository provides the code for the paper "Latent Retrieval Augmented Generation of Cross-Domain Protein Binders". **RADiAnc**e is a diffusion model that generates protein binder by leveraging retrieval-augmented generation techniques. 
+This repository provides the code for the paper "Latent Retrieval Augmented Generation of Cross-Domain Protein Binders". **RADiAnce** is a diffusion model that generates protein binder by leveraging retrieval-augmented generation techniques. 
 ## Setup
 You can create and activate the environment by:
 ```bash
