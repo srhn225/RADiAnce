@@ -1,4 +1,17 @@
-# RADiAnce
+# RADiAnce:Retrieval-Augmented Diffusion for Aligned interface 
+![model](./assets/model1.svg)
+
+
+## Introduction
+This repository provides the code for the paper "Latent Retrieval Augmented Generation of Cross-Domain Protein Binders". **RADiAnc**e is a diffusion model that generates protein binder by leveraging retrieval-augmented generation techniques. 
+## Setup
+You can create and activate the environment by:
+```bash
+conda env create -f env_cuda117.yaml
+conda activate RADiAnce
+```
+For evalutation, you need to install PyRosetta, plaease refer to [PyRosetta Installation](https://www.pyrosetta.org/downloads) for details.
+
 ## Data Processing
 
 **Suppose all the datasets are downloaded below `/path/to/data/`.**
@@ -6,8 +19,6 @@
 ### Peptide
 
 All data are saved under `/path/to/data/peptide`. We set environment variable `export PREFIX=/path/to/data/peptide`.
-
-1. LNR & PepBench & ProtFrag
 
 Download:
 
@@ -27,7 +38,6 @@ tar zxvf $PREFIX/ProtFrag.tar.gz -C $PREFIX
 Processing:
 
 ```bash
-# for 6mcl.pdb, there is unknown atoms in the pdb named X, which you need to manually remove
 python -m scripts.data_process.peptide.pepbench --index ${PREFIX}/LNR/test.txt --out_dir ${PREFIX}/LNR/processed --remove_het
 python -m scripts.data_process.peptide.pepbench --index ${PREFIX}/pepbench/all.txt --out_dir ${PREFIX}/pepbench/processed
 python -m scripts.data_process.peptide.transform_index --train_index ${PREFIX}/pepbench/train.txt --valid_index ${PREFIX}/pepbench/valid.txt --all_index_for_non_standard ${PREFIX}/pepbench/all.txt --processed_dir ${PREFIX}/pepbench/processed/
@@ -58,7 +68,7 @@ python -m scripts.data_process.antibody.split --index ${PREFIX}/SAbDab/index.txt
 
 ```
 
-## Prepare RAG Database
+## Preparing RAG Database(Before Training and Inference)
 ```bash
 python -m cal_topk --config ./configs/contrastive/calculate/topk_protein.yaml --ckpt path/to/contrastive_vae --gpu 0 --save_dir your_path
 ```
@@ -73,7 +83,7 @@ GPU=0,1,2,3,4,5,6,7 bash ./scripts/train.sh ./configs/contrastive/train_pt.yaml 
 GPU=0,1,2,3,4,5,6,7 bash ./scripts/train.sh ./configs/LDM-rag/train_pt.yaml # train rag diffusion model, you should also modify the path of the rag database and checkpoints in the config file
 
 ```
-## Generation on Test Sets
+## Generation on Test Sets (Inference)
 ```bash
 # peptide
 python generate.py --config configs/test/test_pep.yaml --ckpt /path/to/checkpoint.ckpt --gpu 0 --save_dir ./results/pep
