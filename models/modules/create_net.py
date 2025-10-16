@@ -4,11 +4,11 @@
 from .GET.get import GET
 from .EPT.ept import XTransEncoderAct as EPT
 from .EPT.ept import XTransEncoderActrag as EPTrag
-from .EPT.ept import XTransEncoderActragfull as EPTragfull
+
 from .EPT.ept import XTransEncoderActadaLN as EPTragadaLN
 from .EPT.ept import XTransEncoderActincontext as EPTragincontext
 from .EPT.ept import XTransEncoderActadaLNAttn as EPTragadaLNAttn
-from .EPT.ept import XTransEncoderActragmask as EPTragmask
+
 from .BAT.encoder import BATEncoder as BAT
 from .EGNN.encoder import EGNNEncoder as EGNN
 
@@ -60,14 +60,7 @@ def create_net(
         }
         kargs.update(opt)
         return EPTrag(**kargs)        
-    elif name == 'EPTragfull':
-        kargs = {
-            'hidden_size': hidden_size,
-            'ffn_size': hidden_size,
-            'edge_size': edge_size
-        }
-        kargs.update(opt)
-        return EPTragfull(**kargs)  
+
     elif name == 'EPTragadaLN':
         kargs = {
             'hidden_size': hidden_size,
@@ -92,13 +85,6 @@ def create_net(
         }
         kargs.update(opt)
         return EPTragadaLNAttn(**kargs)
-    elif name == 'EPTragmask':
-        kargs = {
-            'hidden_size': hidden_size,
-            'ffn_size': hidden_size,
-            'edge_size': edge_size
-        }
-        kargs.update(opt)
-        return EPTragmask(**kargs)
+
     else:
         raise NotImplementedError(f'{name} not implemented')

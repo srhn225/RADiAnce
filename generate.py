@@ -89,7 +89,7 @@ def generate_wrapper(model, sample_opt={}):
         def wrapper(batch):
             batch_S, batch_X, batch_A, batch_ll, batch_bonds, batch_intra_bonds = model.generate(**batch)
             return batch_S, batch_X, batch_A, batch_ll, batch_bonds, batch_intra_bonds
-    elif isinstance(model, models.LDMMolDesignClean) or isinstance(model, models.LDMMolDesignRAG) or isinstance(model, models.LDMMolDesignCFG) or isinstance(model, models.LDMMolDesignRAGfull) or isinstance(model,models.LDMMolDesignRAGmask):# or isinstance(model, models.LFMMolDesign):
+    elif isinstance(model, models.LDMMolDesignClean) or isinstance(model, models.LDMMolDesignRAG):# or isinstance(model, models.LFMMolDesign):
         def wrapper(batch):
             res_tuple = model.sample(sample_opt=sample_opt, **batch)
             if len(res_tuple) == 6:

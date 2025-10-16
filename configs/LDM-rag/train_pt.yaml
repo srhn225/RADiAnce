@@ -6,7 +6,7 @@ dataset:
         class: MixDatasetWrapper
         datasets:
           # pepbench
-          - class: PeptideDatasetRAGfull
+          - class: PeptideDatasetRAG
             mmap_dir: ./datasets/peptide/pepbench/processed
             specify_index: ./datasets/peptide/pepbench/processed/train_index.txt
             cluster: ./datasets/peptide/pepbench/train.cluster
@@ -14,14 +14,14 @@ dataset:
             feature_path: ./featuresfull/protein/ligand_mmap
             topn_index_path: ./featuresfull/protein/top50_matches.json
           # protein-peptide complex with non standard amino acids
-          - class: PeptideDatasetRAGfull
+          - class: PeptideDatasetRAG
             mmap_dir: ./datasets/peptide/pepbench/processed
             specify_index: ./datasets/peptide/pepbench/processed/non_standard_index.txt
             length_type: block
             feature_path: ./featuresfull/protein/ligand_mmap
             topn_index_path: ./featuresfull/protein/top50_matches.json
           # protein-fragments
-          - class: PeptideDatasetRAGfull
+          - class: PeptideDatasetRAG
             mmap_dir: ./datasets/peptide/ProtFrag/processed
             length_type: block
             feature_path: ./featuresfull/protein/ligand_mmap
@@ -34,7 +34,7 @@ dataset:
     # Antibody
     - class: DynamicBatchWrapper
       dataset:
-        class: AntibodyDatasetRAGfull
+        class: AntibodyDatasetRAG
         mmap_dir: ./datasets/antibody/SAbDab/processed
         specify_index: ./datasets/antibody/SAbDab/processed/train_index.txt
         length_type: block
@@ -46,7 +46,7 @@ dataset:
   valid:
     - class: DynamicBatchWrapper
       dataset: 
-        class: PeptideDatasetRAGfull
+        class: PeptideDatasetRAG
         mmap_dir: ./datasets/peptide/pepbench/processed
         specify_index: ./datasets/peptide/pepbench/processed/valid_index.txt
         length_type: block
@@ -58,7 +58,7 @@ dataset:
 
     - class: DynamicBatchWrapper
       dataset: 
-        class: AntibodyDatasetRAGfull
+        class: AntibodyDatasetRAG
         mmap_dir: ./datasets/antibody/SAbDab/processed
         specify_index: ./datasets/antibody/SAbDab/processed/valid_index.txt
         length_type: block
@@ -82,7 +82,7 @@ trainer:
     max_epoch: 2500
     save_topk: 10
     val_freq: 1
-    save_dir: ./ckpts/ldmproteinfull
+    save_dir: ./ckpts/ldmprotein
     patience: 10
     metric_min_better: true
     proj_name: RADiAnce # for wandb
@@ -101,7 +101,7 @@ trainer:
       min_lr: 5.0e-6
 
 model:
-  class: LDMMolDesignRAGfull
+  class: LDMMolDesignRAG
   autoencoder_ckpt: './ckpts/combined/AE_combined/version_0/checkpoint/epoch249_step238500.ckpt' #load by yourself 
   latent_deterministic: true  # without resample in training
   hidden_size: 512
@@ -111,7 +111,7 @@ model:
   diffusion_opt:
     trans_seq_type: Diffusion
     trans_pos_type: Diffusion
-    encoder_type: EPTragfull
+    encoder_type: EPTrag
     encoder_opt:
       n_layers: 6
       n_rbf: 64
